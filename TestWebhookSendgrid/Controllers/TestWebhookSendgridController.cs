@@ -17,15 +17,15 @@ namespace WebApplication1.Controllers
             //{
                 string publicKey = Environment.GetEnvironmentVariable("SNOWFLAKE_PUBLICKEY");
                 string body = string.Empty;
-                Console.WriteLine(Request.Headers[SIGNATURE_HEADER]);
-                Console.WriteLine(Request.Headers[TIMESTAMP_HEADER]);
-                Console.WriteLine(ConvertPublicKeyToECDSA(publicKey));
+                Console.WriteLine($"SIGNATURE_HEADER: {Request.Headers[SIGNATURE_HEADER]}");
+                Console.WriteLine($"TIMESTAMP_HEADER: {Request.Headers[TIMESTAMP_HEADER]}");
                 using (StreamReader stream = new StreamReader(Request.Body))
                 {
                     body = await stream.ReadToEndAsync();
                 }
                 // if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
                 {
+                    Console.WriteLine($"payload: {body}");
                     var json = JsonDocument.Parse(body).RootElement;
                     StoreInSnowflake(json);
                 }
