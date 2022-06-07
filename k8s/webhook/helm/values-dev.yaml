@@ -1,0 +1,19 @@
+deployment:
+  image: gcr.io/PROJECT_ID/IMAGE:TAG
+
+namespace: webhook-dev
+name: webhook
+
+ConfigMap:
+  name: webhook-config
+  data:
+    ASPNETCORE_ENVIRONMENT: Development
+
+Secret:
+  name: webhook-secrets
+
+replicaCount: 1
+
+providers:
+  gke:
+    autopilot: true

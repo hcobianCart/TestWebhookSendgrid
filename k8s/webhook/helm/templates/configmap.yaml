@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.name }}
+{{- with .Values.ConfigMap.data }}
+data:
+  {{- toYaml . | nindent 6 }}
+{{- end }}

@@ -1,0 +1,80 @@
+name: Deployment - Development
+
+on:
+  push:  
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: autopilot-cluster-1
+  GKE_ZONE: us-central1
+  DEPLOYMENT_NAME: webhook
+  IMAGE: webhook
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # SETUP #
+      - uses: actions/checkout@v2
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      
+      - name: Test nuget sources
+        run: ls -lart
+      
+      # BUILD #
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build --no-restore
+        
+      # RUN UNIT TEST #
+      
+      # BUILD DOCKER IMAGE #
+        
+      - name: Set Image Tag
+        id: set_image_tag
+        run: |
+          echo "::set-output name=image_tag::$(date +'%Y%m%d').${{ github.run_number }}_${{ github.sha }}"
+
+      - name: Build Docker Image(s)
+        run: |-
+          docker build --tag "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
+
+      # PUBLISH #
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
+          project_id: ${{ env.PROJECT_ID }} #takes values from general secrets section
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      # Push the Docker image to Google Container Registry
+      - name: Publish
+        run: |-
+          docker push "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}"
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }} #takes values from general secrets section
+          location: ${{ env.GKE_ZONE }} #takes values from general secrets section
+          credentials: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
+
+      # Install helm
+      - uses: azure/setup-helm@v1
+        id: install
+
+      - name: Deploy Docker Image to GKE
+        working-directory: ./k8s/webhook/helm
+        run: |
+          helm upgrade --install --namespace webhook-dev --create-namespace --wait -f ./values-dev.yaml --set deployment.image=gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }} webhook .
