@@ -17,21 +17,17 @@ namespace WebApplication1.Controllers
             //{
                 string publicKey = Environment.GetEnvironmentVariable("SNOWFLAKE_PUBLICKEY");
                 string body = string.Empty;
-                Console.WriteLine($"SIGNATURE_HEADER: {Request.Headers[SIGNATURE_HEADER]}");
-                Console.WriteLine($"TIMESTAMP_HEADER: {Request.Headers[TIMESTAMP_HEADER]}");
+                //Console.WriteLine($"SIGNATURE_HEADER: {Request.Headers[SIGNATURE_HEADER]}");
+                //Console.WriteLine($"TIMESTAMP_HEADER: {Request.Headers[TIMESTAMP_HEADER]}");
                 using (StreamReader stream = new StreamReader(Request.Body))
                 {
                     body = await stream.ReadToEndAsync();
                 }
-                if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
+                //if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
                 {
                     Console.WriteLine($"payload: {body}");
                     var json = JsonDocument.Parse(body).RootElement;
                     StoreInSnowflake(json);
-                }
-                else 
-                {
-                    Console.WriteLine("verify signature failed");
                 }
             //}
             //catch (Exception ex) { }
@@ -79,6 +75,7 @@ namespace WebApplication1.Controllers
                         }
                         catch (Exception ex)
                         {
+                            Console.WriteLine($"Array item: {item.ToString()}");
                             Console.WriteLine(ex.ToString());
                             //TODO Handle bad unicode
                         }
@@ -98,6 +95,7 @@ namespace WebApplication1.Controllers
                     }
                     catch (Exception ex)
                     {
+                        Console.WriteLine($"Object: {body.ToString()}");
                         Console.WriteLine(ex.ToString());
                         //Handle bad unicode
                     }
