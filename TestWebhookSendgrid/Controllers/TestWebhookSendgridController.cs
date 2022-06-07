@@ -23,16 +23,16 @@ namespace WebApplication1.Controllers
                 {
                     body = await stream.ReadToEndAsync();
                 }
-                // if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
+                if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
                 {
                     Console.WriteLine($"payload: {body}");
                     var json = JsonDocument.Parse(body).RootElement;
                     StoreInSnowflake(json);
                 }
-                /*else 
+                else 
                 {
-                    Console.WriteLine("else verify");
-                }*/
+                    Console.WriteLine("verify signature failed");
+                }
             //}
             //catch (Exception ex) { }
 
