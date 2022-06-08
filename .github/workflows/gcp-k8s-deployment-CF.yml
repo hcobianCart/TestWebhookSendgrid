@@ -37,6 +37,10 @@ jobs:
         working-directory: ./CloudFunction
         run: |
           gcloud functions deploy webhook --runtime dotnet3 --trigger-http --allow-unauthenticated --entry-point CloudFunction.Function
+      
+      - name: Allow All for Cloud Function
+        working-directory: ./CloudFunction
+        run: |
           gcloud functions add-iam-policy-binding webhook --member="allUsers" --role="roles/cloudfunctions.invoker"
 
 
