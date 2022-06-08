@@ -13,7 +13,8 @@ namespace CloudFunction
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task HandleAsync(HttpContext context)
         {
-            await context.Response.WriteAsync("Hello, Functions Framework.");
+            var db = Environment.GetEnvironmentVariable("SNOWFLAKE_DB");
+            await context.Response.WriteAsync($"Hello, Functions Framework. {db}");
         }
     }
 }
