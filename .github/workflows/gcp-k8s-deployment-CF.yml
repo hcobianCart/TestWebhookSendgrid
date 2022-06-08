@@ -1,0 +1,39 @@
+name: Deployment Cloud Functions
+
+on:
+  push:  
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: autopilot-cluster-1
+  GKE_ZONE: us-central1
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # SETUP #
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
+          project_id: ${{ env.PROJECT_ID }} #takes values from general secrets section
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }} #takes values from general secrets section
+          location: ${{ env.GKE_ZONE }} #takes values from general secrets section
+          credentials: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
+
+      - name: Deploy Cloud Function
+        working-directory: ./CloudFunction
+        run: |
+          gcloud functions deploy webhook --runtime dotnet3 --trigger-http --entry-point CloudFunction.Function --allow-unauthenticated
