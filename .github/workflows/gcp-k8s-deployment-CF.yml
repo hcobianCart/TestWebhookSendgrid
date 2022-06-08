@@ -36,4 +36,4 @@ jobs:
       - name: Deploy Cloud Function
         working-directory: ./CloudFunction
         run: |
-          gcloud functions deploy webhook --runtime dotnet3 --trigger-http --allow-unauthenticated --entry-point CloudFunction.Function --set-env-vars SNOWFLAKE_DB=INGESTION_DB
+          gcloud functions deploy webhook --runtime dotnet3 --trigger-http --allow-unauthenticated --entry-point CloudFunction.Function --set-env-vars ${{ secrets.VARIABLES }}
