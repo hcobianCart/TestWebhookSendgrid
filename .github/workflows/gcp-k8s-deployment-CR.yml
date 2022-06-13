@@ -81,3 +81,10 @@ jobs:
           --set-env-vars "^|^${{ secrets.VARIABLES }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1 \
           --set-secrets=SB_JWT_MANAGER_KEY=SB_JWT_MANAGER_KEY:1
+
+      - name: Allow all
+        working-directory: ./CloudFunction
+        run: |
+          gcloud run services add-iam-policy-binding ${{ env.IMAGE }} \
+          --member="allUsers" \
+          --role="roles/run.invoker"
