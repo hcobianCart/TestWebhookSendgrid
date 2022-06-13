@@ -75,8 +75,5 @@ jobs:
         run: |
           gcloud run deploy ${{ env.IMAGE }} \
           --allow-unauthenticated \
-          --port 8080 \
-          --no-use-http2 \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
-          --set-env-vars "^|^${{ secrets.VARIABLES }}" \        
-          --set-secrets SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1, SB_JWT_MANAGER_KEY=SB_JWT_MANAGER_KEY:1
+          --set-env-vars "^|^${{ secrets.VARIABLES }}" \
