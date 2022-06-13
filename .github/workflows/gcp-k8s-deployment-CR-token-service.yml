@@ -46,7 +46,7 @@ jobs:
 
       - name: Build Docker Image(s)
         run: |-
-          docker build . -f Dockerfile-token -t "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
+          docker build -f Dockerfile-token -t "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
 
       # PUBLISH #
       # Setup gcloud CLI
