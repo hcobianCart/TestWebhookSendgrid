@@ -14,7 +14,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SNOWFLAKE_DB": "INGESTION_DB"
       },
       "applicationUrl": "https://localhost:7288;http://localhost:5288",
       "dotnetRunMessages": true
