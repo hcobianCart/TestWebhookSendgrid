@@ -15,24 +15,23 @@ namespace WebApplication1.Controllers
         [Authorize]
         public async Task<string> SaveMetrics()
         {
-            //try
-            //{
+            try
+            {
                 string publicKey = Environment.GetEnvironmentVariable("SNOWFLAKE_PUBLICKEY");
                 string body = string.Empty;
-                //Console.WriteLine($"SIGNATURE_HEADER: {Request.Headers[SIGNATURE_HEADER]}");
-                //Console.WriteLine($"TIMESTAMP_HEADER: {Request.Headers[TIMESTAMP_HEADER]}");
                 using (StreamReader stream = new StreamReader(Request.Body))
                 {
                     body = await stream.ReadToEndAsync();
                 }
-                //if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
+                if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, Request.Headers[SIGNATURE_HEADER], Request.Headers[TIMESTAMP_HEADER]))
                 {
                     Console.WriteLine($"payload: {body}");
+                    body = JavaScriptEscape(body);
                     var json = JsonDocument.Parse(body).RootElement;
                     StoreInSnowflake(json);
                 }
-            //}
-            //catch (Exception ex) { }
+            }
+            catch (Exception ex) { }
 
             return "ok";
         }
@@ -139,6 +138,16 @@ namespace WebApplication1.Controllers
             var timestampedPayload = timestamp + payload;
             var decodedSignature = Signature.fromBase64(signature);
             return Ecdsa.verify(timestampedPayload, decodedSignature, publicKey);
+        }
+        private string JavaScriptEscape(string text)
+        {
+            return text
+                .Replace(@"\u005c", "\\")
+                .Replace(@"\u0022", "\"")
+                .Replace(@"\u0027", "'")
+                .Replace(@"\u0026", "&")
+                .Replace(@"\u003c", "<")
+                .Replace(@"\u003e", ">");
         }
 
     }
