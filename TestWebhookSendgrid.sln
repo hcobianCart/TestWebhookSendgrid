@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWebhookSendgrid", "TestWebhookSendgrid\TestWebhookSendgrid.csproj", "{AD329F18-7E10-4FD9-8E87-0DDC7DB6CE36}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenService", "TokenService\TokenService.csproj", "{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AD329F18-7E10-4FD9-8E87-0DDC7DB6CE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD329F18-7E10-4FD9-8E87-0DDC7DB6CE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD329F18-7E10-4FD9-8E87-0DDC7DB6CE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

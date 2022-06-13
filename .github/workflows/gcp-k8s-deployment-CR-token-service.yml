@@ -1,4 +1,4 @@
-name: Deployment - Cloud Run
+name: Deployment - Cloud Run token service
 
 on:
   push:  
@@ -10,7 +10,7 @@ env:
   GKE_CLUSTER: autopilot-cluster-1
   GKE_ZONE: us-central1
   DEPLOYMENT_NAME: webhook
-  IMAGE: webhook-dev
+  IMAGE: tokenservice-dev
 
 jobs:
   setup-build-publish-deploy:
@@ -46,7 +46,7 @@ jobs:
 
       - name: Build Docker Image(s)
         run: |-
-          docker build --tag "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
+          docker build . -f Dockerfile-token --tag "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
 
       # PUBLISH #
       # Setup gcloud CLI
@@ -78,6 +78,5 @@ jobs:
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
-          --set-env-vars "^|^${{ secrets.VARIABLES }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1 \
           --set-secrets=SB_JWT_MANAGER_KEY=SB_JWT_MANAGER_KEY:1
