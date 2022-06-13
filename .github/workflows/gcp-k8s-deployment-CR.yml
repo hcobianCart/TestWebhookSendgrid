@@ -75,5 +75,6 @@ jobs:
         run: |
           gcloud run deploy ${{ env.IMAGE }} \
           --allow-unauthenticated \
+          --region ${{ env.GKE_ZONE }} \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
           --set-env-vars "^|^${{ secrets.VARIABLES }}" \
