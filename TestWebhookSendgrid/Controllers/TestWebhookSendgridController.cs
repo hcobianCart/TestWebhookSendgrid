@@ -1,4 +1,5 @@
 using EllipticCurve;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Snowflake.Data.Client;
 using System.Data;
@@ -11,6 +12,7 @@ namespace WebApplication1.Controllers
     public class TestWebhookSendgrid : ControllerBase
     {
         [HttpPost]
+        [Authorize]
         public async Task<string> SaveMetrics()
         {
             //try
