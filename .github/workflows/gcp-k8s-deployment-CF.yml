@@ -36,7 +36,7 @@ jobs:
       - name: Deploy Cloud Function
         working-directory: ./CloudFunction
         run: |
-          gcloud functions deploy webhook \
+          gcloud functions deploy webhook-dev \
           --runtime dotnet3 \
           --trigger-http \
           --allow-unauthenticated \
