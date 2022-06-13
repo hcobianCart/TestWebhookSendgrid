@@ -78,4 +78,5 @@ jobs:
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
-          --set-env-vars "^|^${{ secrets.VARIABLES }}" 
+          --set-env-vars "^|^${{ secrets.VARIABLES }}" \
+          --set-secrets=SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1
