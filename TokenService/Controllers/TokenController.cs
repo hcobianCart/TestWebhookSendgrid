@@ -18,18 +18,30 @@ namespace TokenService.Controllers
         [HttpPost(Name = "Token")]
         public IActionResult Post([FromForm] string grant_type)
         {
-            Console.WriteLine($"FromForm: {grant_type}");
-            Console.WriteLine($"Authorization Header: {Request.Headers["Authorization"]}");
-            string body = string.Empty;
-            try
+            Console.WriteLine($"grant_type : {grant_type}");
+            Console.WriteLine($"grant_type : {Request?.Headers["Authorization"]}");
+            var prefix = "Basic";
+            var basicAuth = Request?.Headers["Authorization"];
+            if (basicAuth.HasValue && basicAuth.Value.Any() && basicAuth.Value[0].StartsWith(prefix))
             {
-                using (StreamReader stream = new StreamReader(Request.Body))
+                var Inputcredentials = basicAuth.Value[0].Substring(prefix.Length).Trim();
+                var Credentials = Base64Encode($"{Environment.GetEnvironmentVariable("client_id")}:{Environment.GetEnvironmentVariable("client_secret")}");
+                if (!Credentials.Equals(Inputcredentials))
                 {
-                    body = stream.ReadToEndAsync().Result;
+                    return Unauthorized();
+                }
+                else
+                {
+                    if (!grant_type.Equals("client_credentials"))
+                    {
+                        return Unauthorized("unsupported_grant_type");
+                    }
                 }
             }
-            catch (Exception ex) { }
-            Console.WriteLine($"payload: {body}");
+            else
+            {
+                return Unauthorized();
+            }
             var token = GenerateJWT(Environment.GetEnvironmentVariable("SB_JWT_CLIENT_KEY"), Configuration["SB_Jwt_Client:Issuer"], Configuration["SB_Jwt_Client:Audience"]);
             return Ok(new { access_token = token, token_type  = "Bearer" });
         }
@@ -44,6 +56,12 @@ namespace TokenService.Controllers
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
 
     }
