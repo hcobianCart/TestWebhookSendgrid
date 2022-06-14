@@ -19,6 +19,7 @@ namespace TokenService.Controllers
         public IActionResult Post([FromForm] string grant_type)
         {
             Console.WriteLine($"FromForm: {grant_type}");
+            Console.WriteLine($"Authorization Header: {Request.Headers["Authorization"]}");
             string body = string.Empty;
             try
             {
