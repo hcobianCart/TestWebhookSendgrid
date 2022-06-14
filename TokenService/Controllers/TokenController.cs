@@ -23,7 +23,7 @@ namespace TokenService.Controllers
             {
                 using (StreamReader stream = new StreamReader(Request.Body))
                 {
-                    body = stream.ReadToEnd();
+                    body = stream.ReadToEndAsync().Result;
                 }
             }
             catch (Exception ex) { }
