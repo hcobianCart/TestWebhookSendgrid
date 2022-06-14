@@ -16,8 +16,9 @@ namespace TokenService.Controllers
         }
 
         [HttpPost(Name = "Token")]
-        public IActionResult Post()
+        public IActionResult Post([FromForm] string grant_type)
         {
+            Console.WriteLine($"FromForm: {grant_type}");
             string body = string.Empty;
             try
             {
