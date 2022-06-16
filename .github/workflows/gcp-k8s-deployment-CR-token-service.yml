@@ -78,6 +78,7 @@ jobs:
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
+          --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=Development" \
           --set-secrets=SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1 \
           --set-secrets=SB_JWT_MANAGER_KEY=SB_JWT_MANAGER_KEY:1 \
           --set-secrets=client_id=client_id:1 \
