@@ -63,13 +63,6 @@ jobs:
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}"
 
-      # Get the GKE credentials so we can deploy to the cluster
-      - uses: google-github-actions/get-gke-credentials@v0.2.1
-        with:
-          cluster_name: ${{ env.GKE_CLUSTER }} #takes values from general secrets section
-          location: ${{ env.GKE_ZONE }} #takes values from general secrets section
-          credentials: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
-
       - name: Deploy Cloud Run
         working-directory: ./CloudFunction
         run: |
