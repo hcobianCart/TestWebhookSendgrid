@@ -32,23 +32,23 @@ jobs:
         with:
           key: "${{ github.event.inputs.target_environment }}"
             map: |
-            {
-              "dev": {
-                "environment": "Development",
-                "IMAGE": "webhook-dev",
-                "GKE_ZONE": "us-central1"
-              },
-              "stage": {
-                "environment": "Stage",
-                "IMAGE": "webhook-stage",
-                "GKE_ZONE": "us-central1"
-              },
-              "prod": {
-                "environment": "Production",
-                "IMAGE": "webhook-prod",
-                "GKE_ZONE": "us-central1"
+              {
+                "dev": {
+                  "environment": "Development",
+                  "IMAGE": "webhook-dev",
+                  "GKE_ZONE": "us-central1"
+                },
+                "stage": {
+                  "environment": "Stage",
+                  "IMAGE": "webhook-stage",
+                  "GKE_ZONE": "us-central1"
+                },
+                "prod": {
+                  "environment": "Production",
+                  "IMAGE": "webhook-prod",
+                  "GKE_ZONE": "us-central1"
+                }
               }
-            }
       # SETUP #
       - name: Checkout
         uses: actions/checkout@v2
