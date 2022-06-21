@@ -30,7 +30,7 @@ jobs:
       # Maps the input option to associated environments.
       - uses: kanga333/variable-mapper@master
         with:
-          key: "${{ github.event.inputs.target_environment }}"
+            key: "${{ github.event.inputs.target_environment }}"
             map: |
               {
                 "dev": {
