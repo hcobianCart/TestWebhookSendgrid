@@ -89,7 +89,7 @@ jobs:
 
       - name: Build Docker Image(s)
         run: |-
-          docker build --tag "gcr.io/$PROJECT_ID/CloudRun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
+          docker build --tag "gcr.io/$PROJECT_ID/cloudrun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" .
 
       # PUBLISH #
       # Setup gcloud CLI
@@ -104,7 +104,7 @@ jobs:
       # Push the Docker image to Google Container Registry
       - name: Publish
         run: |-
-          docker push "gcr.io/$PROJECT_ID/CloudRun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}"
+          docker push "gcr.io/$PROJECT_ID/cloudrun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}"
 
       - name: Deploy Cloud Run
         working-directory: ./CloudFunction
@@ -113,7 +113,7 @@ jobs:
           --allow-unauthenticated \
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
-          --image "gcr.io/$PROJECT_ID/CloudRun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
+          --image "gcr.io/$PROJECT_ID/cloudrun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SNOWFLAKE_PUBLICKEY=${{ env.SNOWFLAKE_PUBLICKEY }} \
           --set-secrets=SNOWFLAKE_USER=${{ env.SNOWFLAKE_USER }} \
