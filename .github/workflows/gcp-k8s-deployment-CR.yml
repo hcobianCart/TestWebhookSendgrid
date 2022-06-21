@@ -22,6 +22,7 @@ env:
   SNOWFLAKE_ACCOUNT: "SNOWFLAKE_ACCOUNT:1"
   SNOWFLAKE_DB: "SNOWFLAKE_DB:1"
   SNOWFLAKE_SCHEMA: "SNOWFLAKE_SCHEMA:1"
+  SNOWFLAKE_WAREHOUSE: "SNOWFLAKE_WAREHOUSE:1"
   SNOWFLAKE_TABLE: "SNOWFLAKE_TABLE:1"
   SNOWFLAKE_ROLE: "SNOWFLAKE_ROLE:1"
   SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
@@ -46,17 +47,50 @@ jobs:
                 "dev": {
                   "environment": "Development",
                   "IMAGE": "webhook-dev",
-                  "GKE_ZONE": "us-central1"
+                  "GKE_ZONE": "us-central1",
+                  "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
+                  "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
+                  "SNOWFLAKE_PASSWORD": "SNOWFLAKE_PASSWORD:1",
+                  "SNOWFLAKE_ACCOUNT": "SNOWFLAKE_ACCOUNT:1",
+                  "SNOWFLAKE_DB": "SNOWFLAKE_DB:1",
+                  "SNOWFLAKE_SCHEMA": "SNOWFLAKE_SCHEMA:1",
+                  "SNOWFLAKE_WAREHOUSE": "SNOWFLAKE_WAREHOUSE:1",
+                  "SNOWFLAKE_TABLE": "SNOWFLAKE_TABLE:1",
+                  "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1"
                 },
                 "stage": {
                   "environment": "Stage",
                   "IMAGE": "webhook-stage",
-                  "GKE_ZONE": "us-central1"
+                  "GKE_ZONE": "us-central1",
+                  "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
+                  "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
+                  "SNOWFLAKE_PASSWORD": "SNOWFLAKE_PASSWORD:1",
+                  "SNOWFLAKE_ACCOUNT": "SNOWFLAKE_ACCOUNT:1",
+                  "SNOWFLAKE_DB": "SNOWFLAKE_DB:1",
+                  "SNOWFLAKE_SCHEMA": "SNOWFLAKE_SCHEMA:1",
+                  "SNOWFLAKE_WAREHOUSE": "SNOWFLAKE_WAREHOUSE:1",
+                  "SNOWFLAKE_TABLE": "SNOWFLAKE_TABLE:1",
+                  "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1"
                 },
                 "prod": {
                   "environment": "Production",
                   "IMAGE": "webhook-prod",
-                  "GKE_ZONE": "us-central1"
+                  "GKE_ZONE": "us-central1",
+                  "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
+                  "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
+                  "SNOWFLAKE_PASSWORD": "SNOWFLAKE_PASSWORD:1",
+                  "SNOWFLAKE_ACCOUNT": "SNOWFLAKE_ACCOUNT:1",
+                  "SNOWFLAKE_DB": "SNOWFLAKE_DB:1",
+                  "SNOWFLAKE_SCHEMA": "SNOWFLAKE_SCHEMA:1",
+                  "SNOWFLAKE_WAREHOUSE": "SNOWFLAKE_WAREHOUSE:1",
+                  "SNOWFLAKE_TABLE": "SNOWFLAKE_TABLE:1",
+                  "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1"
                 }
               }
       # SETUP #
