@@ -1,24 +1,57 @@
 name: Deployment - Cloud Run
 
 on:
-  push:  
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: true
+      target_environment:
+        type: choice
+        options:
+        - dev
+        - stage
+        - prod
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: autopilot-cluster-1
   GKE_ZONE: us-central1
-  DEPLOYMENT_NAME: webhook
-  IMAGE: webhook-dev
+  IMAGE: webhook
 
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish and Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Print Target Values
+        run: |
+          echo "TARGET_RELEASE_TAG: ${{ github.event.inputs.release_tag }}"
+          echo "TARGET_ENVIRONMENT: ${{ github.event.inputs.target_environment }}"
+
+      # Maps the input option to associated environments.
+      - uses: kanga333/variable-mapper@master
+        with:
+          key: "${{ github.event.inputs.target_environment }}"
+            map: |
+            {
+              "dev": {
+                "environment": "Development",
+                "IMAGE": "webhook-dev",
+                "GKE_ZONE": "us-central1"
+              },
+              "stage": {
+                "environment": "Stage",
+                "IMAGE": "webhook-stage",
+                "GKE_ZONE": "us-central1"
+              },
+              "prod": {
+                "environment": "Production",
+                "IMAGE": "webhook-prod",
+                "GKE_ZONE": "us-central1"
+              }
+            }
       # SETUP #
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
@@ -42,7 +75,7 @@ jobs:
       - name: Set Image Tag
         id: set_image_tag
         run: |
-          echo "::set-output name=image_tag::$(date +'%Y%m%d').${{ github.run_number }}_${{ github.sha }}"
+          echo "::set-output name=image_tag::${{ github.event.inputs.release_tag }}"
 
       - name: Build Docker Image(s)
         run: |-
