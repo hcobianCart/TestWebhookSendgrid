@@ -60,7 +60,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "environment=dev"
+                  "LABELS": "env=dev, app=cart-webhook-sendgrid"
                 },
                 "stage": {
                   "environment": "Stage",
@@ -77,7 +77,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "environment=stage"
+                  "LABELS": "env=stage, app=cart-webhook-sendgrid"
                 },
                 "prod": {
                   "environment": "Production",
@@ -94,7 +94,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "environment=prod"
+                  "LABELS": "env=prod, app=cart-webhook-sendgrid"
                 }
               }
       # SETUP #
