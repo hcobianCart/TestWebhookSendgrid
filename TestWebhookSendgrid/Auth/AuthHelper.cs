@@ -46,9 +46,9 @@ namespace TestWebhookSendgrid.Auth
 
     public static class AuthHelper
     {
-        private const string DEFAULT_ISSUER = "SB_Jwt_Manager:Issuer";
-        private const string DEFAULT_AUDIENCE = "SB_Jwt_Manager:Audience";
-        private const string DEFAULT_KEY = "SB_JWT_MANAGER_KEY";
+        private const string DEFAULT_ISSUER = "SB_Jwt_Client:Issuer";
+        private const string DEFAULT_AUDIENCE = "SB_Jwt_Client:Audience";
+        private const string DEFAULT_KEY = "SB_JWT_CLIENT_KEY";
 
 
         public static TokenValidationParameters JwtDefaultValidationParameters(WebApplicationBuilder builder)
@@ -107,12 +107,6 @@ namespace TestWebhookSendgrid.Auth
                     context.Options.TokenValidationParameters.ValidIssuer = builder.Configuration["SB_Jwt_Client:Issuer"];
                     context.Options.TokenValidationParameters.ValidAudience = builder.Configuration["SB_Jwt_Client:Audience"];
                     context.Options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SB_JWT_CLIENT_KEY"]));
-                }
-                else
-                {
-                    context.Options.TokenValidationParameters.ValidIssuer = builder.Configuration["SB_Jwt_Manager:Issuer"];
-                    context.Options.TokenValidationParameters.ValidAudience = builder.Configuration["SB_Jwt_Manager:Audience"];
-                    context.Options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SB_JWT_MANAGER_KEY"]));
                 }
             }
 
