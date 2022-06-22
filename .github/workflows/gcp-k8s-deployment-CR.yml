@@ -27,7 +27,7 @@ env:
   SNOWFLAKE_ROLE: "SNOWFLAKE_ROLE:1"
   SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
   SB_JWT_MANAGER_KEY: "SB_JWT_MANAGER_KEY:1"
-  LABELS: "env=dev, app=cart-webhook-sendgrid"
+  LABELS: "env=dev"
 
 jobs:
   setup-build-publish-deploy:
@@ -60,7 +60,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "env=dev, app=cart-webhook-sendgrid"
+                  "LABELS": "env=dev"
                 },
                 "stage": {
                   "environment": "Stage",
@@ -77,7 +77,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "env=stage, app=cart-webhook-sendgrid"
+                  "LABELS": "env=stage"
                 },
                 "prod": {
                   "environment": "Production",
@@ -94,7 +94,7 @@ jobs:
                   "SNOWFLAKE_ROLE": "SNOWFLAKE_ROLE:1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
-                  "LABELS": "env=prod, app=cart-webhook-sendgrid"
+                  "LABELS": "env=prod"
                 }
               }
       # SETUP #
