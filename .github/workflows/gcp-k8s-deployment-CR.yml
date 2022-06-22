@@ -27,7 +27,7 @@ env:
   SNOWFLAKE_ROLE: "SNOWFLAKE_ROLE:1"
   SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
   SB_JWT_MANAGER_KEY: "SB_JWT_MANAGER_KEY:1"
-  LABELS: "environment=dev"
+  LABELS: "env=dev, app=cart-webhook-sendgrid"
 
 jobs:
   setup-build-publish-deploy:

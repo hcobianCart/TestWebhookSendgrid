@@ -20,7 +20,7 @@ env:
   SB_JWT_MANAGER_KEY: "SB_JWT_MANAGER_KEY:1"
   client_id: "client_id:1"
   client_secret: "client_secret:1"
-  LABELS: "environment=dev"
+  LABELS: "env=dev, app=cart-tokenservice"
 
 jobs:
   setup-build-publish-deploy:
@@ -46,7 +46,7 @@ jobs:
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
-                  "LABELS": "env=dev, cart-tokenservice"
+                  "LABELS": "env=dev, app=cart-tokenservice"
                 },
                 "stage": {
                   "environment": "Stage",
@@ -56,7 +56,7 @@ jobs:
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
-                  "LABELS": "env=stage, cart-tokenservice"
+                  "LABELS": "env=stage, app=cart-tokenservice"
                 },
                 "prod": {
                   "environment": "Production",
@@ -66,7 +66,7 @@ jobs:
                   "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
-                  "LABELS": "env=prod, cart-tokenservice" 
+                  "LABELS": "env=prod, app=cart-tokenservice" 
                 }
               }
       # SETUP #
