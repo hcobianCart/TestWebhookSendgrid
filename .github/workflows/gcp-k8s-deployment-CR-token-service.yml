@@ -17,7 +17,6 @@ env:
   GKE_ZONE: us-central1
   IMAGE: cart-tokenservice
   SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
-  SB_JWT_MANAGER_KEY: "SB_JWT_MANAGER_KEY:1"
   client_id: "client_id:1"
   client_secret: "client_secret:1"
   LABELS: "env=dev"
@@ -43,7 +42,6 @@ jobs:
                   "IMAGE": "cart-tokenservice-dev",
                   "GKE_ZONE": "us-central1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
-                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
                   "LABELS": "env=dev"
@@ -53,7 +51,6 @@ jobs:
                   "IMAGE": "cart-tokenservice-stage",
                   "GKE_ZONE": "us-central1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
-                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
                   "LABELS": "env=stage"
@@ -63,7 +60,6 @@ jobs:
                   "IMAGE": "cart-tokenservice",
                   "GKE_ZONE": "us-central1"
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
-                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
                   "LABELS": "env=prod" 
