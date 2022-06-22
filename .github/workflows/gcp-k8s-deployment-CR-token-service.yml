@@ -58,7 +58,7 @@ jobs:
                 "prod": {
                   "environment": "Production",
                   "IMAGE": "cart-tokenservice",
-                  "GKE_ZONE": "us-central1"
+                  "GKE_ZONE": "us-central1",
                   "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
                   "client_id": "client_id:1",
                   "client_secret": "client_secret:1",
