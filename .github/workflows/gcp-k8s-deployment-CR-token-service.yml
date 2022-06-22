@@ -123,6 +123,5 @@ jobs:
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
-          --set-secrets=SB_JWT_MANAGER_KEY=${{ env.SB_JWT_MANAGER_KEY }} \
           --set-secrets=client_id=${{ env.client_id }} \
           --set-secrets=client_secret=${{ env.client_secret }}

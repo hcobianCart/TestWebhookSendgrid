@@ -162,5 +162,4 @@ jobs:
           --set-secrets=SNOWFLAKE_WAREHOUSE=${{ env.SNOWFLAKE_WAREHOUSE }} \
           --set-secrets=SNOWFLAKE_TABLE=${{ env.SNOWFLAKE_TABLE }} \
           --set-secrets=SNOWFLAKE_ROLE=${{ env.SNOWFLAKE_ROLE }} \
-          --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
-          --set-secrets=SB_JWT_MANAGER_KEY=${{ env.SB_JWT_MANAGER_KEY }}
+          --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }}
