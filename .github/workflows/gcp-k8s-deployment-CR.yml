@@ -15,7 +15,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_ZONE: us-central1
-  IMAGE: webhook
+  IMAGE: cart-webhook-sendgrid
   SNOWFLAKE_PUBLICKEY: "SNOWFLAKE_PUBLICKEY:1"
   SNOWFLAKE_USER: "SNOWFLAKE_USER:1"
   SNOWFLAKE_PASSWORD: "SNOWFLAKE_PASSWORD:1"
@@ -46,7 +46,7 @@ jobs:
               {
                 "dev": {
                   "environment": "Development",
-                  "IMAGE": "webhook-dev",
+                  "IMAGE": "cart-webhook-sendgrid-dev",
                   "GKE_ZONE": "us-central1",
                   "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
                   "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
@@ -62,7 +62,7 @@ jobs:
                 },
                 "stage": {
                   "environment": "Stage",
-                  "IMAGE": "webhook-stage",
+                  "IMAGE": "cart-webhook-sendgrid-stage",
                   "GKE_ZONE": "us-central1",
                   "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
                   "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
@@ -78,7 +78,7 @@ jobs:
                 },
                 "prod": {
                   "environment": "Production",
-                  "IMAGE": "webhook-prod",
+                  "IMAGE": "cart-webhook-sendgrid",
                   "GKE_ZONE": "us-central1",
                   "SNOWFLAKE_PUBLICKEY": "SNOWFLAKE_PUBLICKEY:1",
                   "SNOWFLAKE_USER": "SNOWFLAKE_USER:1",
@@ -147,6 +147,7 @@ jobs:
           --allow-unauthenticated \
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
+          --labels env=${{ env.environment }} \
           --image "gcr.io/$PROJECT_ID/cloudrun/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SNOWFLAKE_PUBLICKEY=${{ env.SNOWFLAKE_PUBLICKEY }} \
