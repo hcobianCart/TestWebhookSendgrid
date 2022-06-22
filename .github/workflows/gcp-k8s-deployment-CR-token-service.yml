@@ -15,7 +15,12 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_ZONE: us-central1
-  IMAGE: tokenservice
+  IMAGE: cart-tokenservice
+  SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
+  SB_JWT_MANAGER_KEY: "SB_JWT_MANAGER_KEY:1"
+  client_id: "client_id:1"
+  client_secret: "client_secret:1"
+  LABELS: "environment=dev"
 
 jobs:
   setup-build-publish-deploy:
@@ -35,18 +40,33 @@ jobs:
               {
                 "dev": {
                   "environment": "Development",
-                  "IMAGE": "tokenservice-dev",
-                  "GKE_ZONE": "us-central1"
+                  "IMAGE": "cart-tokenservice-dev",
+                  "GKE_ZONE": "us-central1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "environment=dev"
                 },
                 "stage": {
                   "environment": "Stage",
-                  "IMAGE": "tokenservice-stage",
-                  "GKE_ZONE": "us-central1"
+                  "IMAGE": "cart-tokenservice-stage",
+                  "GKE_ZONE": "us-central1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "environment=stage"
                 },
                 "prod": {
                   "environment": "Production",
-                  "IMAGE": "tokenservice-prod",
+                  "IMAGE": "cart-tokenservice",
                   "GKE_ZONE": "us-central1"
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "SB_JWT_MANAGER_KEY": "SB_JWT_MANAGER_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "environment=prod"
                 }
               }
       # SETUP #
@@ -94,15 +114,15 @@ jobs:
           docker push "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}"
 
       - name: Deploy Cloud Run
-        working-directory: ./CloudFunction
         run: |
           gcloud run deploy ${{ env.IMAGE }} \
           --allow-unauthenticated \
           --region ${{ env.GKE_ZONE }} \
           --port 8080 \
+          --labels ${{ env.LABELS }} \
           --image "gcr.io/$PROJECT_ID/$IMAGE:${{ steps.set_image_tag.outputs.image_tag }}" \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
-          --set-secrets=SB_JWT_CLIENT_KEY=SB_JWT_CLIENT_KEY:1 \
-          --set-secrets=SB_JWT_MANAGER_KEY=SB_JWT_MANAGER_KEY:1 \
-          --set-secrets=client_id=client_id:1 \
-          --set-secrets=client_secret=client_secret:1
+          --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
+          --set-secrets=SB_JWT_MANAGER_KEY=${{ env.SB_JWT_MANAGER_KEY }} \
+          --set-secrets=client_id=${{ env.client_id }} \
+          --set-secrets=client_secret=${{ env.client_secret }}
