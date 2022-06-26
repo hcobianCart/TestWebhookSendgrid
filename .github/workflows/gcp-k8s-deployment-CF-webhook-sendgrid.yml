@@ -113,7 +113,7 @@ jobs:
           --runtime dotnet3 \
           --trigger-http \
           --allow-unauthenticated \
-          --labels ${{ env.LABELS }} \
+          --clear-labels --update-labels ${{ env.LABELS }} \
           --entry-point WebhookSendgridCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SNOWFLAKE_PUBLICKEY=${{ env.SNOWFLAKE_PUBLICKEY }} \

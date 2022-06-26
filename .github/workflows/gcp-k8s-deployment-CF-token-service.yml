@@ -85,7 +85,7 @@ jobs:
           --runtime dotnet3 \
           --trigger-http \
           --allow-unauthenticated \
-          --labels ${{ env.LABELS }} \
+          --clear-labels --update-labels ${{ env.LABELS }} \
           --entry-point TokenServiceCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
