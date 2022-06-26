@@ -1,4 +1,4 @@
-name: Deployment - Cloud Run webhook sendgrid
+name: Deployment - Cloud Function token service
 
 on:
   workflow_dispatch:
