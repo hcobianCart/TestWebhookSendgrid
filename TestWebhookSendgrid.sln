@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWebhookSendgrid", "Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenService", "TokenService\TokenService.csproj", "{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenServiceCF", "TokenServiceCF\TokenServiceCF.csproj", "{A20862F9-6493-44E2-8EB3-8BC514FDC969}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookSendgridCF", "WebhookSendgridCF\WebhookSendgridCF.csproj", "{4B42C70D-B8B4-4C5D-913D-7BA935316642}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE9F3D78-A4A9-4F50-A15B-A56DE1D1625D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20862F9-6493-44E2-8EB3-8BC514FDC969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20862F9-6493-44E2-8EB3-8BC514FDC969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20862F9-6493-44E2-8EB3-8BC514FDC969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20862F9-6493-44E2-8EB3-8BC514FDC969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B42C70D-B8B4-4C5D-913D-7BA935316642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B42C70D-B8B4-4C5D-913D-7BA935316642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B42C70D-B8B4-4C5D-913D-7BA935316642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B42C70D-B8B4-4C5D-913D-7BA935316642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

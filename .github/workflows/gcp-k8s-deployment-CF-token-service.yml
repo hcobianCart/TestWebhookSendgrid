@@ -1,0 +1,93 @@
+name: Deployment - Cloud Run webhook sendgrid
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: true
+      target_environment:
+        type: choice
+        options:
+        - dev
+        - stage
+        - prod
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_ZONE: us-central1
+  IMAGE: cart-tokenservice
+  SB_JWT_CLIENT_KEY: "SB_JWT_CLIENT_KEY:1"
+  client_id: "client_id:1"
+  client_secret: "client_secret:1"
+  LABELS: "env=dev"
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Target Values
+        run: |
+          echo "TARGET_RELEASE_TAG: ${{ github.event.inputs.release_tag }}"
+          echo "TARGET_ENVIRONMENT: ${{ github.event.inputs.target_environment }}"
+
+      # Maps the input option to associated environments.
+      - uses: kanga333/variable-mapper@master
+        with:
+            key: "${{ github.event.inputs.target_environment }}"
+            map: |
+              {
+                "dev": {
+                  "environment": "Development",
+                  "IMAGE": "cart-tokenservice-dev",
+                  "GKE_ZONE": "us-central1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "env=dev"
+                },
+                "stage": {
+                  "environment": "Stage",
+                  "IMAGE": "cart-tokenservice-stage",
+                  "GKE_ZONE": "us-central1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "env=stage"
+                },
+                "prod": {
+                  "environment": "Production",
+                  "IMAGE": "cart-tokenservice",
+                  "GKE_ZONE": "us-central1",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:1",
+                  "client_id": "client_id:1",
+                  "client_secret": "client_secret:1",
+                  "LABELS": "env=prod" 
+                }
+              }
+      # SETUP #
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }} #takes values from general secrets section
+          project_id: ${{ env.PROJECT_ID }} #takes values from general secrets section
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      - name: Deploy Cloud Function
+        working-directory: ./TokenServiceCF
+        run: |
+          gcloud functions deploy ${{ env.IMAGE }} \
+          --runtime dotnet3 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --labels ${{ env.LABELS }} \
+          --entry-point TokenServiceCF.Function \
+          --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
+          --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
+          --set-secrets=client_id=${{ env.client_id }} \
+          --set-secrets=client_secret=${{ env.client_secret }}

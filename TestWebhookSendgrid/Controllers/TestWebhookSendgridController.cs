@@ -69,7 +69,17 @@ namespace WebApplication1.Controllers
                         var uuid = Guid.NewGuid();
 
                         //TODO use parameterized queries
-                        cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select '{uuid}', to_variant(parse_json('{item}')))";
+                        cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select ':p0', to_variant(parse_json(':p1')))";
+                        var param0 = cmd.CreateParameter();
+                        param0.ParameterName = "p0";
+                        param0.DbType = System.Data.DbType.Guid;
+                        param0.Value = uuid;
+                        cmd.Parameters.Add(param0);
+                        var param1 = cmd.CreateParameter();
+                        param1.ParameterName = "p1";
+                        param1.DbType = System.Data.DbType.String;
+                        param1.Value = item;
+                        cmd.Parameters.Add(param1);
                         try
                         {
                             cmd.ExecuteNonQuery();
@@ -88,8 +98,17 @@ namespace WebApplication1.Controllers
                     IDbCommand cmd = conn.CreateCommand();
                     var uuid = Guid.NewGuid();
 
-                    //TODO use parameterized queries
-                    cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select '{uuid}', to_variant(parse_json('{body}')))";
+                    cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select :p0, to_variant(parse_json(:p1)))";
+                    var param0 = cmd.CreateParameter();
+                    param0.ParameterName = "p0";
+                    param0.DbType = System.Data.DbType.Guid;
+                    param0.Value = uuid;
+                    cmd.Parameters.Add(param0);
+                    var param1 = cmd.CreateParameter();
+                    param1.ParameterName = "p1";
+                    param1.DbType = System.Data.DbType.String;
+                    param1.Value = body;
+                    cmd.Parameters.Add(param1);
                     try
                     {
                         cmd.ExecuteNonQuery();
