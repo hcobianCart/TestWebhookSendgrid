@@ -38,27 +38,27 @@ jobs:
                   "environment": "Development",
                   "IMAGE": "cart-tokenservice-dev",
                   "GKE_ZONE": "us-central1",
-                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:lastest",
-                  "client_id": "client_id:lastest",
-                  "client_secret": "client_secret:lastest",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:latest",
+                  "client_id": "client_id:latest",
+                  "client_secret": "client_secret:latest",
                   "LABELS": "env=dev"
                 },
                 "stage": {
                   "environment": "Stage",
                   "IMAGE": "cart-tokenservice-stage",
                   "GKE_ZONE": "us-central1",
-                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:lastest",
-                  "client_id": "client_id:lastest",
-                  "client_secret": "client_secret:lastest",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:latest",
+                  "client_id": "client_id:latest",
+                  "client_secret": "client_secret:latest",
                   "LABELS": "env=stage"
                 },
                 "prod": {
                   "environment": "Production",
                   "IMAGE": "cart-tokenservice",
                   "GKE_ZONE": "us-central1",
-                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:lastest",
-                  "client_id": "client_id:lastest",
-                  "client_secret": "client_secret:lastest",
+                  "SB_JWT_CLIENT_KEY": "SB_JWT_CLIENT_KEY:latest",
+                  "client_id": "client_id:latest",
+                  "client_secret": "client_secret:latest",
                   "LABELS": "env=prod" 
                 }
               }
