@@ -3,8 +3,6 @@ name: Deployment - Cloud Function token service
 on:
   workflow_dispatch:
     inputs:
-      release_tag:
-        required: true
       target_environment:
         type: choice
         options:
@@ -28,7 +26,6 @@ jobs:
     steps:
       - name: Print Target Values
         run: |
-          echo "TARGET_RELEASE_TAG: ${{ github.event.inputs.release_tag }}"
           echo "TARGET_ENVIRONMENT: ${{ github.event.inputs.target_environment }}"
 
       # Maps the input option to associated environments.
