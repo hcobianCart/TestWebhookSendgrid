@@ -100,16 +100,16 @@ jobs:
           dotnet-version: 3.1.x
       
       - name: Test nuget sources
-        working-directory: ./WebhookSendgridCF
+        working-directory: ./Cart.WebhookSendgridCF
         run: ls -lart
       
       # BUILD #
       - name: Restore dependencies
-        working-directory: ./WebhookSendgridCF
+        working-directory: ./Cart.WebhookSendgridCF
         run: dotnet restore
       
       - name: Build
-        working-directory: ./WebhookSendgridCF
+        working-directory: ./Cart.WebhookSendgridCF
         run: dotnet build --no-restore
 
       # Setup gcloud CLI
@@ -125,7 +125,7 @@ jobs:
       # * Secret Manager Secret Accessor
       # ** the secrets should be created prior to the deployment
       - name: Deploy Cloud Function
-        working-directory: ./WebhookSendgridCF
+        working-directory: ./Cart.WebhookSendgridCF
         run: |
           gcloud functions deploy ${{ env.IMAGE }} \
           --runtime dotnet3 \
@@ -133,7 +133,7 @@ jobs:
           --allow-unauthenticated \
           --memory 1024MB \
           --clear-labels --update-labels ${{ env.LABELS }} \
-          --entry-point WebhookSendgridCF.Function \
+          --entry-point Cart.WebhookSendgridCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SNOWFLAKE_PUBLICKEY=${{ env.SNOWFLAKE_PUBLICKEY }} \
           --set-secrets=SNOWFLAKE_USER=${{ env.SNOWFLAKE_USER }} \

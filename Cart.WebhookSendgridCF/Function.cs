@@ -14,7 +14,7 @@ using Snowflake.Data.Client;
 using System.Data;
 using System.Text.Json;
 
-namespace WebhookSendgridCF
+namespace Cart.TokenServiceCF
 {
     public class Function : IHttpFunction
     {

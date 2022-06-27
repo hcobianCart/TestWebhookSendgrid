@@ -72,16 +72,16 @@ jobs:
           dotnet-version: 3.1.x
       
       - name: Test nuget sources
-        working-directory: ./TokenServiceCF
+        working-directory: ./Cart.TokenServiceCF
         run: ls -lart
       
       # BUILD #
       - name: Restore dependencies
-        working-directory: ./TokenServiceCF
+        working-directory: ./Cart.TokenServiceCF
         run: dotnet restore
       
       - name: Build
-        working-directory: ./TokenServiceCF
+        working-directory: ./Cart.TokenServiceCF
         run: dotnet build --no-restore
 
       # Setup gcloud CLI
@@ -97,14 +97,14 @@ jobs:
       # * Secret Manager Secret Accessor
       # ** the secrets should be created prior to the deployment
       - name: Deploy Cloud Function
-        working-directory: ./TokenServiceCF
+        working-directory: ./Cart.TokenServiceCF
         run: |
           gcloud functions deploy ${{ env.IMAGE }} \
           --runtime dotnet3 \
           --trigger-http \
           --allow-unauthenticated \
           --clear-labels --update-labels ${{ env.LABELS }} \
-          --entry-point TokenServiceCF.Function \
+          --entry-point Cart.TokenServiceCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
           --set-secrets=client_id=${{ env.client_id }} \

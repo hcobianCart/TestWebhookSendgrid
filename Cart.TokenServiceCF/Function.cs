@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace TokenServiceCF
+namespace Cart.TokenServiceCF
 {
     public class Function : IHttpFunction
     {
