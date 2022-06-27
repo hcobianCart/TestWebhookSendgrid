@@ -30,6 +30,7 @@ namespace WebhookSendgridCF
         {
             try
             {
+                context.Response.ContentType = "application/json";
                 if (JwtMessageReceivedHandler(context, Configuration))
                 {
                     string publicKey = Environment.GetEnvironmentVariable("SNOWFLAKE_PUBLICKEY");
@@ -41,13 +42,18 @@ namespace WebhookSendgridCF
                     
                     if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, context.Request.Headers[SIGNATURE_HEADER], context.Request.Headers[TIMESTAMP_HEADER]))
                     {
-                        Console.WriteLine($"payload: {body}");
                         body = JavaScriptEscape(body);
                         var json = JsonDocument.Parse(body).RootElement;
-                        StoreInSnowflake(json);
-
-                        context.Response.StatusCode = StatusCodes.Status200OK;
-                        await context.Response.WriteAsync(string.Empty);
+                        var result = StoreInSnowflake(json);
+                        await JsonSerializer.SerializeAsync(context.Response.Body, new { message = result });
+                        if (result == "OK")
+                        {
+                            context.Response.StatusCode = StatusCodes.Status200OK;
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        }
                         return;
                     }
                     else
@@ -68,7 +74,7 @@ namespace WebhookSendgridCF
             catch (Exception ex) 
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync(string.Empty);
+                await context.Response.WriteAsync(ex.Message);
                 return;
             }
         }
@@ -90,7 +96,7 @@ namespace WebhookSendgridCF
             var table = Environment.GetEnvironmentVariable("SNOWFLAKE_TABLE");
             return $"{db}.{schema}.{table}";
         }
-        private void StoreInSnowflake(JsonElement body)
+        private string StoreInSnowflake(JsonElement body)
         {
             using (IDbConnection conn = new SnowflakeDbConnection())
             {
@@ -123,7 +129,7 @@ namespace WebhookSendgridCF
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex.ToString());
+                            return ex.Message;
                         }
                     }
                 }
@@ -152,12 +158,12 @@ namespace WebhookSendgridCF
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.ToString());
+                        return ex.Message;
                     }
                 }
-
                 conn.Close();
             }
+            return "OK";
         }
         /// <summary>
         /// Signature verification HTTP header name for the signature being sent.
@@ -268,7 +274,6 @@ namespace WebhookSendgridCF
                     }
                 }
             }
-
             return false;
         }
     }

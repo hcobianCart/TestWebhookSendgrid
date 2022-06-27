@@ -79,7 +79,12 @@ namespace TokenServiceCF
                                     await context.Response.WriteAsync("unsupported_grant_type");
                                     return;
                                 }
-                                break;
+                            }
+                        default:
+                            {
+                                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                                await context.Response.WriteAsync(string.Empty);
+                                return;
                             }
                     }
                 }
@@ -90,9 +95,10 @@ namespace TokenServiceCF
                     return;
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex) 
+            {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync(String.Empty);
+                await context.Response.WriteAsync(ex.Message);
                 return;
             }
         }
