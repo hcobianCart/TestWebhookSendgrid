@@ -85,6 +85,7 @@ jobs:
           --runtime dotnet3 \
           --trigger-http \
           --allow-unauthenticated \
+          --memory 1024MB \
           --clear-labels --update-labels ${{ env.LABELS }} \
           --entry-point TokenServiceCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
