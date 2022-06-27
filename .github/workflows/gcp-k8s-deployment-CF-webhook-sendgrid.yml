@@ -133,7 +133,7 @@ jobs:
           --allow-unauthenticated \
           --memory 1024MB \
           --clear-labels --update-labels ${{ env.LABELS }} \
-          --entry-point WebhookSendgridCF.Function \
+          --entry-point Cart.WebhookSendgridCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SNOWFLAKE_PUBLICKEY=${{ env.SNOWFLAKE_PUBLICKEY }} \
           --set-secrets=SNOWFLAKE_USER=${{ env.SNOWFLAKE_USER }} \

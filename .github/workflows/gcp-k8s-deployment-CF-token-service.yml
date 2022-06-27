@@ -104,7 +104,7 @@ jobs:
           --trigger-http \
           --allow-unauthenticated \
           --clear-labels --update-labels ${{ env.LABELS }} \
-          --entry-point TokenServiceCF.Function \
+          --entry-point Cart.TokenServiceCF.Function \
           --set-env-vars "^|^ASPNETCORE_ENVIRONMENT=${{ env.environment }}" \
           --set-secrets=SB_JWT_CLIENT_KEY=${{ env.SB_JWT_CLIENT_KEY }} \
           --set-secrets=client_id=${{ env.client_id }} \
