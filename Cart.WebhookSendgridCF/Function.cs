@@ -28,6 +28,7 @@ namespace Cart.WebhookSendgridCF
         }
         public async Task HandleAsync(HttpContext context)
         {
+            
             try
             {
                 context.Response.ContentType = "application/json";
@@ -40,7 +41,7 @@ namespace Cart.WebhookSendgridCF
                         body = await stream.ReadToEndAsync();
                     }
                     
-                    if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, context.Request.Headers[SIGNATURE_HEADER], context.Request.Headers[TIMESTAMP_HEADER]))
+                    //if (VerifySignature(ConvertPublicKeyToECDSA(publicKey), body, context.Request.Headers[SIGNATURE_HEADER], context.Request.Headers[TIMESTAMP_HEADER]))
                     {
                         body = JavaScriptEscape(body);
                         var json = JsonDocument.Parse(body).RootElement;
@@ -56,12 +57,13 @@ namespace Cart.WebhookSendgridCF
                         }
                         return;
                     }
+                    /*
                     else
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         await context.Response.WriteAsync(string.Empty);
                         return;
-                    }
+                    }*/
                     
                 }
                 else
