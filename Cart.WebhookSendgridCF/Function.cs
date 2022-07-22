@@ -46,7 +46,6 @@ namespace Cart.WebhookSendgridCF
                         body = JavaScriptEscape(body);
                         var json = JsonDocument.Parse(body).RootElement;
                         var result = StoreInSnowflake(json);
-                        await JsonSerializer.SerializeAsync(context.Response.Body, new { message = result });
                         if (result == "OK")
                         {
                             context.Response.StatusCode = StatusCodes.Status200OK;
@@ -55,6 +54,7 @@ namespace Cart.WebhookSendgridCF
                         {
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;
                         }
+                        await JsonSerializer.SerializeAsync(context.Response.Body, new { message = result });
                         return;
                     }
                     /*
