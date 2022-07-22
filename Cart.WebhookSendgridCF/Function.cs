@@ -109,22 +109,96 @@ namespace Cart.WebhookSendgridCF
                 {
                     foreach (var item in body.EnumerateArray())
                     {
+                        var SGEventId = item.GetProperty("sg_event_id").GetString();
+                        var SGMessageID = item.GetProperty("sg_message_id").GetString();
+                        if (Search(conn, SGEventId))
+                        {
+                            IDbCommand cmd = conn.CreateCommand();
+                            var uuid = Guid.NewGuid();
+
+                            cmd.CommandText = $"insert into {Table()} (UUID, BODY, SGEventId, SGMessageID, Date) (select :p0, to_variant(parse_json(:p1)), :p2, :p3, :p4)";
+                            //
+                            var param0 = cmd.CreateParameter();
+                            param0.ParameterName = "p0";
+                            param0.DbType = System.Data.DbType.Guid;
+                            param0.Value = uuid;
+                            cmd.Parameters.Add(param0);
+                            //
+                            var param1 = cmd.CreateParameter();
+                            param1.ParameterName = "p1";
+                            param1.DbType = System.Data.DbType.String;
+                            param1.Value = item;
+                            cmd.Parameters.Add(param1);
+                            //
+                            var param2 = cmd.CreateParameter();
+                            param2.ParameterName = "p2";
+                            param2.DbType = System.Data.DbType.String;
+                            param2.Value = SGEventId;
+                            cmd.Parameters.Add(param2);
+                            //
+                            var param3 = cmd.CreateParameter();
+                            param3.ParameterName = "p3";
+                            param3.DbType = System.Data.DbType.String;
+                            param3.Value = SGMessageID;
+                            cmd.Parameters.Add(param3);
+                            //
+                            var param4 = cmd.CreateParameter();
+                            param4.ParameterName = "p4";
+                            param4.DbType = System.Data.DbType.DateTime;
+                            param4.Value = DateTime.Now;
+                            cmd.Parameters.Add(param4);
+                            try
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                return ex.Message;
+                            }
+                        }
+                    }
+                }
+
+                if (body.ValueKind == JsonValueKind.Object)
+                {
+                    var SGEventId = body.GetProperty("sg_event_id").GetString();
+                    var SGMessageID = body.GetProperty("sg_message_id").GetString();
+                    if (Search(conn, SGEventId))
+                    {
                         IDbCommand cmd = conn.CreateCommand();
                         var uuid = Guid.NewGuid();
 
-                        cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select :p0, to_variant(parse_json(:p1)))";
-                        var pUUID = cmd.CreateParameter();
-                        pUUID.ParameterName = "p0";
-                        pUUID.DbType = System.Data.DbType.Guid;
-                        pUUID.Value = uuid;
-                        cmd.Parameters.Add(pUUID);
-
-                        var pBODY = cmd.CreateParameter();
-                        pBODY.ParameterName = "p1";
-                        pBODY.DbType = System.Data.DbType.String;
-                        pBODY.Value = item;
-                        cmd.Parameters.Add(pBODY);
-
+                        cmd.CommandText = $"insert into {Table()} (UUID, BODY, SGEventId, SGMessageID, Date) (select :p0, to_variant(parse_json(:p1)), :p2, :p3, :p4)";
+                        //
+                        var param0 = cmd.CreateParameter();
+                        param0.ParameterName = "p0";
+                        param0.DbType = System.Data.DbType.Guid;
+                        param0.Value = uuid;
+                        cmd.Parameters.Add(param0);
+                        //
+                        var param1 = cmd.CreateParameter();
+                        param1.ParameterName = "p1";
+                        param1.DbType = System.Data.DbType.String;
+                        param1.Value = body;
+                        cmd.Parameters.Add(param1);
+                        //
+                        var param2 = cmd.CreateParameter();
+                        param2.ParameterName = "p2";
+                        param2.DbType = System.Data.DbType.String;
+                        param2.Value = SGEventId;
+                        cmd.Parameters.Add(param2);
+                        //
+                        var param3 = cmd.CreateParameter();
+                        param3.ParameterName = "p3";
+                        param3.DbType = System.Data.DbType.String;
+                        param3.Value = SGMessageID;
+                        cmd.Parameters.Add(param3);
+                        //
+                        var param4 = cmd.CreateParameter();
+                        param4.ParameterName = "p4";
+                        param4.DbType = System.Data.DbType.DateTime;
+                        param4.Value = DateTime.Now;
+                        cmd.Parameters.Add(param4);
                         try
                         {
                             cmd.ExecuteNonQuery();
@@ -135,37 +209,26 @@ namespace Cart.WebhookSendgridCF
                         }
                     }
                 }
-
-                if (body.ValueKind == JsonValueKind.Object)
-                {
-                    IDbCommand cmd = conn.CreateCommand();
-                    var uuid = Guid.NewGuid();
-
-                    //TODO use parameterized queries
-                    cmd.CommandText = $"insert into {Table()} (UUID, BODY) (select :p0, to_variant(parse_json(:p1)))";
-                    var pUUID = cmd.CreateParameter();
-                    pUUID.ParameterName = "p0";
-                    pUUID.DbType = System.Data.DbType.Guid;
-                    pUUID.Value = uuid;
-                    cmd.Parameters.Add(pUUID);
-
-                    var pBODY = cmd.CreateParameter();
-                    pBODY.ParameterName = "p1";
-                    pBODY.DbType = System.Data.DbType.String;
-                    pBODY.Value = body;
-                    cmd.Parameters.Add(pBODY);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        return ex.Message;
-                    }
-                }
                 conn.Close();
             }
             return "OK";
+        }
+        private bool Search(IDbConnection conn, string SGEventId)
+        {
+            var EventId = string.Empty;
+            IDbCommand cmd = conn.CreateCommand();
+            cmd.CommandText = $"SELECT SGEventId FROM {Table()} WHERE SGEventId=:p0";
+            var param0 = cmd.CreateParameter();
+            param0.ParameterName = "p0";
+            param0.DbType = System.Data.DbType.String;
+            param0.Value = SGEventId.Trim();
+            cmd.Parameters.Add(param0);
+            IDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                EventId = reader.GetString(0);
+            }
+            return string.IsNullOrEmpty(EventId);
         }
         /// <summary>
         /// Signature verification HTTP header name for the signature being sent.
