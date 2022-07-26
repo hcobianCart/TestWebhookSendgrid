@@ -46,15 +46,14 @@ namespace Cart.WebhookSendgridCF
                         body = JavaScriptEscape(body);
                         var json = JsonDocument.Parse(body).RootElement;
                         var result = StoreInSnowflake(json);
-                        if (result == "OK")
+                        if (result)
                         {
                             context.Response.StatusCode = StatusCodes.Status200OK;
                         }
                         else
                         {
-                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                         }
-                        await JsonSerializer.SerializeAsync(context.Response.Body, new { message = result });
                         return;
                     }
                     /*
@@ -69,15 +68,13 @@ namespace Cart.WebhookSendgridCF
                 else
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync(string.Empty);
                     return;
                 }
             }
             catch (Exception ex) 
             {
                 Console.WriteLine(ex.ToString());
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync(ex.Message);
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 return;
             }
         }
@@ -144,7 +141,7 @@ namespace Cart.WebhookSendgridCF
                 }
             }
         }
-        private string StoreInSnowflake(JsonElement body)
+        private bool StoreInSnowflake(JsonElement body)
         {
             try
             {
@@ -171,9 +168,9 @@ namespace Cart.WebhookSendgridCF
             catch (Exception ex) 
             { 
                 Console.WriteLine(ex.ToString());
-                return ex.ToString();
+                return false;
             }
-            return "OK";
+            return true;
         }
         private bool Search(IDbConnection conn, string SGEventId)
         {
