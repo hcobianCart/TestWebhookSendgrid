@@ -75,6 +75,7 @@ namespace Cart.WebhookSendgridCF
             }
             catch (Exception ex) 
             {
+                Console.WriteLine(ex.ToString());
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsync(ex.Message);
                 return;
@@ -169,6 +170,7 @@ namespace Cart.WebhookSendgridCF
             }
             catch (Exception ex) 
             { 
+                Console.WriteLine(ex.ToString());
                 return ex.ToString();
             }
             return "OK";
