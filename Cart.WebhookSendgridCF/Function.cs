@@ -182,7 +182,7 @@ namespace Cart.WebhookSendgridCF
             {
                 cmd.CommandText = $"SELECT SGEventId FROM {Table()} WHERE SGEventId=:pSGEventId";
                 var pSGEventId = cmd.CreateParameter();
-                pSGEventId.ParameterName = "ppSGEventId";
+                pSGEventId.ParameterName = "pSGEventId";
                 pSGEventId.DbType = System.Data.DbType.String;
                 pSGEventId.Value = SGEventId.Trim();
                 cmd.Parameters.Add(pSGEventId);
